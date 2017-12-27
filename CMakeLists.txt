@@ -30,6 +30,7 @@ INCLUDE(FindPkgConfig)
 INCLUDE(FindThreads)
 INCLUDE(FeatureSummary)
 INCLUDE(IdeSplitSources)
+INCLUDE(FindStatNsec)
 
 # Build options
 #
