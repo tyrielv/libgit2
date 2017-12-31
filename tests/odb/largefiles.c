@@ -67,6 +67,10 @@ void test_odb_largefiles__streamwrite(void)
 {
 	git_oid expected, oid;
 
+#ifndef GIT_ARCH_64
+	cl_skip();
+#endif
+
 	if (!cl_is_env_set("GITTEST_INVASIVE_FS_SIZE") ||
 		!cl_is_env_set("GITTEST_SLOW"))
 		cl_skip();
@@ -87,6 +91,10 @@ void test_odb_largefiles__streamread(void)
 	git_hash_ctx hash;
 	git_otype type;
 	int hdr_len, ret;
+
+#ifndef GIT_ARCH_64
+	cl_skip();
+#endif
 
 	if (!cl_is_env_set("GITTEST_INVASIVE_FS_SIZE"))
 		cl_skip();
@@ -163,6 +171,10 @@ void test_odb_largefiles__read_header(void)
 	git_oid oid;
 	size_t len;
 	git_otype type;
+
+#ifndef GIT_ARCH_64
+	cl_skip();
+#endif
 
 	if (!cl_is_env_set("GITTEST_INVASIVE_FS_SIZE"))
 		cl_skip();
