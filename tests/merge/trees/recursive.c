@@ -408,3 +408,28 @@ void test_merge_trees_recursive__recursionlimit(void)
 	git_index_free(index);
 }
 
+/* There are multiple levels of criss-cross merges. When one level of
+ recursion produces a virtual commit, that virtual commit should be used
+ to find the merge base in the next round of recursion (as opposed to
+ using the real commits the virtual commit came from).
+ */
+void test_merge_trees_recursive__merge_base_for_virtual_commit(void)
+{
+	git_index *index;
+	git_merge_options opts = GIT_MERGE_OPTIONS_INIT;
+
+	struct merge_index_entry merge_index_entries[] = {
+		{ 0100644, "7ea3c1f54852a32d5f511584c25f61e88d8053cd", 0, "asparagus.txt" },
+		{ 0100644, "480b60fda8111bbdea9a1212310d8b1dfae9dbaf", 0, "beef.txt" },
+		{ 0100644, "671de3247c20943446048a91ad1c81b1befda122", 0, "bouilli.txt" },
+		{ 0100644, "c4e6cca3ec6ae0148ed231f97257df8c311e015f", 3, "gravy.txt" },
+		{ 0100644, "222fe1ca64415b67e02e963a1bcd3f5e059a14e8", 0, "oyster.txt" },
+		{ 0100644, "42b48d2caafbf370d49e92e63c4273a89d5b9b38", 0, "veal.txt" },
+	};
+
+	cl_git_pass(merge_commits_from_branches(&index, repo, "branchJ-1", "branchJ-2", &opts));
+
+	cl_assert(merge_test_index(index, merge_index_entries, 6));
+
+	git_index_free(index);
+}
